@@ -1,8 +1,10 @@
 import express from "express";
-import mongoose from "mongoose";
+import { ApolloServer } from "apollo-server-express";
+import mongoose from "./config/database";
+import typeDefs from "./modules/UserSchema";
+import { resolvers } from "./modules/resolvers";
 
 const app = express();
-
 
 /**
  * Creating basis for app listening
@@ -11,13 +13,21 @@ const app = express();
 
 const PORT = process.env.PORT || 4000;
 
+app.get("/", (req, res) => {
+  res.send("Hello world! This is condelingo!");
+});
+
+/**
+ * Setup Apollo server
+ */
+
+const server = new ApolloServer({ typeDefs, resolvers });
+
+server.applyMiddleware({app});
+
 app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);
   err => {
     console.log(`Server faile to connect`);
   };
-});
-
-app.get("/", (req, res) => {
-  res.send("Hello world! This is condelingo!");
 });
