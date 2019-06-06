@@ -1,6 +1,5 @@
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
-import mongoose from "./config/database";
 import typeDefs from "./modules/UserSchema";
 import { resolvers } from "./modules/resolvers";
 

@@ -1,18 +1,18 @@
-import mongoose from "mongoose";
+import mongoose, {Schema} from "mongoose";
+import {connection2} from "../config/database";
 
-const Schema = mongoose.Schema;
 
 const PythonModuleSchema = new Schema({
-  testName: {
+  test_name: {
     type: String,
     required: true
   },
-  preReq: {
+  pre_req: {
     type: String,
     required: true
   }
 });
 
-const PythonModule = new PythonModuleSchema();
+const PythonModules = connection2.model("python", PythonModuleSchema, "python_modules");
 
-export default PythonModule;
+export default PythonModules;

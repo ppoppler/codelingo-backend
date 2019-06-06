@@ -1,10 +1,8 @@
-import mongoose from 'mongoose';
-
+import mongoose, {Schema} from 'mongoose';
+import {connection1} from "../config/database";
 /**
  * Creating mongoose model for our server 
  */
-
-const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
     name: {
@@ -25,6 +23,6 @@ const UserSchema = new Schema({
     }
 });
 
-const Users = mongoose.model('users', UserSchema, "users");
+const Users = connection1.model('users', UserSchema, "users");
 
 export default Users; 
