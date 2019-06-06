@@ -6,7 +6,7 @@ import { resolvers } from "./modules/resolvers";
 const app = express();
 
 /**
- * Creating basis for app listening
+ * Creates a basis for app listening
  * Uses ES6 with esm for imports
  */
 
@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 });
 
 /**
- * Setup Apollo server
+ * Apollo server
  */
 
 const server = new ApolloServer({ typeDefs, resolvers });

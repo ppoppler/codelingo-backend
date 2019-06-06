@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 import config from "./db_key";
 
+
+/**
+ * 'test' database connection
+ */
+
 const connection1 = mongoose.createConnection(config.DB);
 connection1.then(
   () => {
@@ -13,6 +18,9 @@ connection1.then(
   }
 );
 
+/**
+ * 'python' database connection
+ */
 var connection2 = mongoose.createConnection(config.DB1);
 connection2.then(
   () => {
@@ -25,6 +33,9 @@ connection2.then(
   }
 );
 
+/**
+ * 'python_questions' database connection
+ */
 var connection3 = mongoose.createConnection(config.DB2);
 connection3.then(
   () => {
@@ -38,5 +49,7 @@ connection3.then(
     );
   }
 );
+
+// export the connections
 
 export { connection1, connection2, connection3 };

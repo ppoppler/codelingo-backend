@@ -33,19 +33,19 @@ export const resolvers = {
       });
     },
     getUsers: () => {
-     return new Promise((resolve,object) => {
-         PythonModules.find({}, (err,res) => {
-             if(err) rejects(err);
-             else resolve(res);
-         });
-     });
+      return new Promise((resolve, object) => {
+        PythonModules.find({}, (err, res) => {
+          if (err) rejects(err);
+          else resolve(res);
+        });
+      });
     },
 
     /**
      * Python Module Queries
      */
 
-    getModuleByName: (root, {testName}) => {
+    getModuleByName: (root, { testName }) => {
       return new Promise((resolve, object) => {
         PythonModules.findOne({ test_name: testName }, (err, module) => {
           if (err) rejects(err);
@@ -67,8 +67,11 @@ export const resolvers = {
   /**
    * Mutations
    */
-  
+
   Mutation: {
+    /**
+     * User Mutations
+     */
     createUser: (root, { input }) => {
       const newUser = new Users({
         name: input.name,
