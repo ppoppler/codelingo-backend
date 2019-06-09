@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import config from "./db_key";
 
-
 /**
  * 'test' database connection
  */

@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 import Users from "../models/User";
 import PythonModules from "../models/PythonModule";
+import Questions from "../models/Questions";
 
 export const resolvers = {
   Query: {
-    /**
-     * User Queries
-     */
+
+    // User queries
 
     getUserByID: (root, { id }) => {
       return new Promise((resolve, object) => {
@@ -41,9 +41,7 @@ export const resolvers = {
       });
     },
 
-    /**
-     * Python Module Queries
-     */
+    // Python module queries
 
     getModuleByName: (root, { testName }) => {
       return new Promise((resolve, object) => {
@@ -53,7 +51,6 @@ export const resolvers = {
         });
       });
     },
-
     getModules: () => {
       return new Promise((resolve, object) => {
         PythonModules.find({}, (err, res) => {
@@ -61,17 +58,26 @@ export const resolvers = {
           else resolve(res);
         });
       });
+    },
+
+    //Question queries
+    getQuestionsByModule: (root, {input}) => {
+      return new Promise(( resolve, object) => { 
+        const QuestionCollection = Questions.find((collection)=> {
+          if(collection.language === input.language)
+            return collection;
+        });
+        QuestionCollection.questions.find({lesson:input.lesson}, (err,res) => {
+          if(err) rejects(err);
+          else resolve(res);
+        });
+      })
     }
   },
 
-  /**
-   * Mutations
-   */
-
+  // Mutations 
   Mutation: {
-    /**
-     * User Mutations
-     */
+    // User mutations
     createUser: (root, { input }) => {
       const newUser = new Users({
         name: input.name,
