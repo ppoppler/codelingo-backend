@@ -2,10 +2,12 @@ import mongoose from "mongoose";
 import Users from "../models/User";
 import PythonModules from "../models/PythonModule";
 import Questions from "../models/Questions";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { SECRET } from "../utils/authUtils";
 
 export const resolvers = {
   Query: {
-
     // User queries
 
     getUserByID: (root, { id }) => {
@@ -61,39 +63,68 @@ export const resolvers = {
     },
 
     //Question queries
-    getQuestionsByModule: (root, {input}) => {
-      return new Promise(( resolve, object) => { 
-        const QuestionCollection = Questions.find((collection)=> {
-          if(collection.language === input.language)
-            return collection;
+    getQuestionsByModule: (root, { input }) => {
+      return new Promise((resolve, object) => {
+        const QuestionCollection = Questions.find(collection => {
+          if (collection.language === input.language) return collection;
         });
-        QuestionCollection.questions.find({lesson:input.lesson}, (err,res) => {
-          if(err) rejects(err);
-          else resolve(res);
-        });
-      })
+        QuestionCollection.questions.find(
+          { lesson: input.lesson },
+          (err, res) => {
+            if (err) rejects(err);
+            else resolve(res);
+          }
+        );
+      });
     }
   },
 
-  // Mutations 
+  // Mutations
   Mutation: {
     // User mutations
-    createUser: (root, { input }) => {
+    signUpUser: async (root, { input }) => {
       const newUser = new Users({
         name: input.name,
         email: input.email,
-        password: input.password,
+        password: await bcrypt.hash(input.password, 10),
         date: input.date
       });
 
       newUser.id = newUser._id;
+      const token = jwt.sign({ userId: newUser.id });
 
       return new Promise((resolve, object) => {
         newUser.save(err => {
           if (err) reject(err);
-          else resolve(newUser);
+          else
+            resolve({
+              token: token,
+              user: newUser
+            });
         });
       });
+    },
+
+    loginUser: async (root, { input }) => {
+      const User = await resolvers.Query.getUserByEmail(root, {
+        email: input.email
+      });
+      if (!User) {
+        console.log("User not found");
+      } else {
+        console.log(User);
+      }
+
+      const validPassword = await bcrypt.compare(input.password, User.password);
+      if (!validPassword) {
+        console.log("Incorrect password");
+      }
+
+      const token = jwt.sign({ userId: User.id }, SECRET);
+
+      return new Promise((resolve, object) =>
+        resolve({ token: token, user: User })
+      );
     }
   }
 };
