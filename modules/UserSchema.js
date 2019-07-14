@@ -8,7 +8,15 @@ const typeDefs = gql`
     name: String!
     email: String!
     password: String!
-    date: String
+    date: String,
+    current_modules: [UserModule]
+  }
+
+  type UserModule { 
+    name: String!
+    current_lessons: [String]
+    completed_lessons: [String]
+    incomplete_lessons: [String]
   }
 
   type AuthUser {

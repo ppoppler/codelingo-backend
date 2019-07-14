@@ -118,6 +118,7 @@ export const resolvers = {
       const validPassword = await bcrypt.compare(input.password, User.password);
       if (!validPassword) {
         console.log("Incorrect password");
+        return({token: ''});
       }
 
       const token = jwt.sign({ userId: User.id }, SECRET);

@@ -21,7 +21,12 @@ const UserSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  current_modules: {
+    type: Object,
+    required: true
   }
+
   /**
    * TODO: Fix the UserSchema to include the modules that a user has completed and the score they received on each module test
    */
