@@ -36,12 +36,13 @@ export const resolvers = {
     },
     getUsers: () => {
       return new Promise((resolve, object) => {
-        PythonModules.find({}, (err, res) => {
+        Users.find({}, (err, res) => {
           if (err) rejects(err);
           else resolve(res);
         });
       });
     },
+
 
     // Python module queries
 
